@@ -1949,3 +1949,490 @@
 .modal {
     z-index: 2000;
 }
+
+/* Support Tickets Styles */
+.tickets-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.ticket-card {
+    background: white;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.ticket-card:hover {
+    border-color: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+}
+
+.ticket-card.pending {
+    border-left: 4px solid #f39c12;
+}
+
+.ticket-card.resolved {
+    border-left: 4px solid #27ae60;
+    opacity: 0.8;
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.ticket-info h4 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.ticket-meta {
+    font-size: 13px;
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.ticket-id {
+    background: #ecf0f1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.ticket-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-resolved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.priority-badge {
+    padding: 3px 6px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.priority-high {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.priority-medium {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.priority-low {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.ticket-preview {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 10px 0;
+    line-height: 1.4;
+}
+
+.ticket-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.ticket-date {
+    font-size: 12px;
+    color: #95a5a6;
+}
+
+.ticket-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Job Cards Styles */
+.jobs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.job-card {
+    background: white;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.job-card:hover {
+    border-color: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+}
+
+.job-card.active {
+    border-left: 4px solid #27ae60;
+}
+
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.job-info h4 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.job-meta {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.job-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.status-active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.applications-count {
+    font-size: 12px;
+    color: #6c757d;
+    background: #f8f9fa;
+    padding: 3px 8px;
+    border-radius: 10px;
+}
+
+.job-description {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.job-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.job-posted {
+    font-size: 12px;
+    color: #95a5a6;
+}
+
+.job-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Small buttons */
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-small:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.btn-success {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-info {
+    background: #3498db;
+    color: white;
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    color: white;
+}
+
+.btn-danger {
+    background: #e74c3c;
+    color: white;
+}
+
+/* Stats badges */
+.stats-mini {
+    display: flex;
+    gap: 10px;
+}
+
+.stat-badge {
+    background: #f8f9fa;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 13px;
+    color: #495057;
+    border: 1px solid #e9ecef;
+}
+
+/* Refresh button */
+.refresh-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.refresh-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f618d);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+}
+
+.refresh-btn:active {
+    transform: translateY(0);
+}
+
+/* Card headers */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.card-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 18px;
+}
+
+/* Modal Large Size */
+.modal-large {
+    max-width: 800px;
+    width: 90%;
+}
+
+/* Ticket Details Styles */
+.ticket-details-content {
+    padding: 20px 0;
+}
+
+.ticket-info-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #495057;
+    min-width: 100px;
+    margin-right: 15px;
+}
+
+.info-value {
+    color: #212529;
+}
+
+.ticket-message-section {
+    margin: 20px 0;
+}
+
+.ticket-message-section h4 {
+    color: #495057;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.ticket-message {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    line-height: 1.6;
+    color: #495057;
+}
+
+.ticket-actions-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.ticket-actions-section h4 {
+    color: #495057;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Applications Modal Styles */
+.applications-content {
+    padding: 20px 0;
+}
+
+.job-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.job-info-header h4 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 20px;
+}
+
+.applications-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.application-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.application-card:hover {
+    background: #e9ecef;
+    transform: translateY(-1px);
+}
+
+.applicant-info {
+    flex: 1;
+}
+
+.applicant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.applicant-header h5 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+.application-date {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.applicant-email, .applicant-experience {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 2px 0;
+}
+
+.application-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .application-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .application-actions {
+        margin-top: 10px;
+        justify-content: center;
+    }
+    
+    .applicant-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

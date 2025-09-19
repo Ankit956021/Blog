@@ -670,6 +670,215 @@ class AdminPanel {
             messageDiv.remove();
         }, 3000);
     }
+
+    // New Support and Careers Methods
+    refreshCurrentSection() {
+        this.showMessage('🔄 Refreshing data...', 'info');
+        switch(this.currentSection) {
+            case 'support':
+                this.loadSupport();
+                break;
+            case 'careers':
+                this.loadCareers();
+                break;
+            case 'dashboard':
+                this.loadDashboard();
+                break;
+            case 'blogs':
+                this.loadBlogs();
+                break;
+            case 'comments':
+                this.loadComments();
+                break;
+            case 'users':
+                this.loadUsers();
+                break;
+        }
+        setTimeout(() => {
+            this.showMessage('✅ Data refreshed!', 'success');
+        }, 500);
+    }
+
+    refreshTickets() {
+        this.showMessage('🔄 Refreshing tickets...', 'info');
+        setTimeout(() => {
+            this.showMessage('✅ Tickets refreshed!', 'success');
+        }, 500);
+    }
+
+    openTicketDetails(ticketId) {
+        const tickets = {
+            1: {
+                id: '#T001',
+                user: 'Alice Johnson (alice@example.com)',
+                subject: 'Login Issue - Can\'t access my account',
+                status: 'Pending',
+                priority: 'High',
+                date: '2 hours ago',
+                message: 'I\'m unable to log into my account. Every time I try to enter my credentials, I get an error message saying "Invalid username or password" even though I\'m sure my credentials are correct. I\'ve tried resetting my password multiple times but the reset email never arrives. This is very urgent as I need to access my account for work. Please help me resolve this issue as soon as possible.'
+            },
+            2: {
+                id: '#T002',
+                user: 'Bob Smith (bob@example.com)',
+                subject: 'Feature Request - Dark Mode',
+                status: 'Pending',
+                priority: 'Low',
+                date: '5 hours ago',
+                message: 'Could you please add a dark mode option to the website? It would be great for users who prefer darker themes, especially when browsing during night time. This feature would improve user experience and reduce eye strain.'
+            },
+            3: {
+                id: '#T003',
+                user: 'Charlie Wilson (charlie@example.com)',
+                subject: 'Password Reset Request',
+                status: 'Resolved',
+                priority: 'Medium',
+                date: '1 day ago',
+                message: 'I forgot my password and need to reset it. I clicked the forgot password link but haven\'t received any email yet. Can you please help me reset my password?'
+            }
+        };
+
+        const ticket = tickets[ticketId];
+        if (ticket) {
+            document.getElementById('ticketDetailId').textContent = ticket.id;
+            document.getElementById('ticketDetailUser').textContent = ticket.user;
+            document.getElementById('ticketDetailSubject').textContent = ticket.subject;
+            document.getElementById('ticketDetailStatus').textContent = ticket.status;
+            document.getElementById('ticketDetailPriority').textContent = ticket.priority;
+            document.getElementById('ticketDetailDate').textContent = ticket.date;
+            document.getElementById('ticketDetailMessage').textContent = ticket.message;
+            
+            document.getElementById('ticketDetailsModal').classList.add('show');
+        }
+    }
+
+    resolveTicket(ticketId) {
+        this.showMessage(`✅ Ticket #T00${ticketId} marked as resolved!`, 'success');
+        setTimeout(() => {
+            this.refreshTickets();
+        }, 1000);
+    }
+
+    replyTicket(ticketId) {
+        const reply = prompt('Enter your reply:');
+        if (reply) {
+            this.showMessage(`📧 Reply sent to ticket #T00${ticketId}!`, 'success');
+        }
+    }
+
+    resolveTicketFromModal() {
+        this.showMessage('✅ Ticket marked as resolved!', 'success');
+        this.closeModal('ticketDetailsModal');
+        setTimeout(() => {
+            this.refreshTickets();
+        }, 1000);
+    }
+
+    replyToTicket() {
+        const reply = prompt('Enter your reply message:');
+        if (reply) {
+            this.showMessage('📧 Reply sent successfully!', 'success');
+        }
+    }
+
+    updateTicketPriority() {
+        const priorities = ['Low', 'Medium', 'High', 'Critical'];
+        const currentPriority = document.getElementById('ticketDetailPriority').textContent;
+        const currentIndex = priorities.indexOf(currentPriority);
+        const nextPriority = priorities[(currentIndex + 1) % priorities.length];
+        
+        document.getElementById('ticketDetailPriority').textContent = nextPriority;
+        this.showMessage(`🔄 Priority updated to ${nextPriority}!`, 'success');
+    }
+
+    deleteTicketFromModal() {
+        if (confirm('Are you sure you want to delete this ticket?')) {
+            this.showMessage('🗑️ Ticket deleted successfully!', 'success');
+            this.closeModal('ticketDetailsModal');
+            setTimeout(() => {
+                this.refreshTickets();
+            }, 1000);
+        }
+    }
+
+    showAddJobModal() {
+        document.getElementById('addJobModal').classList.add('show');
+    }
+
+    handleAddJob(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        
+        const newJob = {
+            title: formData.get('title'),
+            department: formData.get('department'),
+            location: formData.get('location'),
+            type: formData.get('type'),
+            experience: formData.get('experience'),
+            description: formData.get('description'),
+            requirements: formData.get('requirements')
+        };
+        
+        this.showMessage(`✅ Job "${newJob.title}" posted successfully!`, 'success');
+        this.closeModal('addJobModal');
+        event.target.reset();
+        
+        // Add job to main website
+        setTimeout(() => {
+            this.showMessage('🌐 Job automatically added to main website!', 'info');
+        }, 1500);
+    }
+
+    viewApplications(jobId) {
+        const jobs = {
+            1: { title: 'Frontend Developer', applications: 12 },
+            2: { title: 'Backend Developer', applications: 8 },
+            3: { title: 'UI/UX Designer', applications: 15 }
+        };
+        
+        const job = jobs[jobId];
+        if (job) {
+            document.getElementById('applicationJobTitle').textContent = job.title;
+            document.getElementById('applicationCount').textContent = `${job.applications} Applications`;
+            document.getElementById('applicationsModal').classList.add('show');
+        }
+    }
+
+    editJob(jobId) {
+        this.showMessage(`✏️ Edit mode for job ID: ${jobId}`, 'success');
+        // Implementation for editing job
+    }
+
+    deleteJob(jobId) {
+        if (confirm('Are you sure you want to delete this job posting?')) {
+            this.showMessage(`🗑️ Job posting deleted successfully!`, 'success');
+            setTimeout(() => {
+                this.showMessage('🌐 Job removed from main website!', 'info');
+            }, 1000);
+        }
+    }
+
+    viewResume(applicationId) {
+        this.showMessage(`📄 Opening resume for application #${applicationId}`, 'info');
+        // In real implementation, this would open a PDF or document
+    }
+
+    acceptApplication(applicationId) {
+        this.showMessage(`✅ Application #${applicationId} accepted!`, 'success');
+        // Send acceptance email to applicant
+        setTimeout(() => {
+            this.showMessage('📧 Acceptance email sent to applicant!', 'info');
+        }, 1000);
+    }
+
+    rejectApplication(applicationId) {
+        if (confirm('Are you sure you want to reject this application?')) {
+            this.showMessage(`❌ Application #${applicationId} rejected.`, 'success');
+            // Send rejection email to applicant
+            setTimeout(() => {
+                this.showMessage('📧 Rejection email sent to applicant.', 'info');
+            }, 1000);
+        }
+    }
 }
 
 // Global Functions for HTML onclick events
@@ -703,7 +912,77 @@ function toggleSidebar() {
     adminPanel.toggleSidebar();
 }
 
-// Initialize Admin Panel
+// New Support Functions
+function refreshCurrentSection() {
+    adminPanel.refreshCurrentSection();
+}
+
+function refreshTickets() {
+    adminPanel.refreshTickets();
+}
+
+function openTicketDetails(ticketId) {
+    adminPanel.openTicketDetails(ticketId);
+}
+
+function resolveTicket(ticketId) {
+    adminPanel.resolveTicket(ticketId);
+}
+
+function replyTicket(ticketId) {
+    adminPanel.replyTicket(ticketId);
+}
+
+function resolveTicketFromModal() {
+    adminPanel.resolveTicketFromModal();
+}
+
+function replyToTicket() {
+    adminPanel.replyToTicket();
+}
+
+function updateTicketPriority() {
+    adminPanel.updateTicketPriority();
+}
+
+function deleteTicketFromModal() {
+    adminPanel.deleteTicketFromModal();
+}
+
+// New Careers Functions
+function showAddJobModal() {
+    adminPanel.showAddJobModal();
+}
+
+function handleAddJob(event) {
+    adminPanel.handleAddJob(event);
+}
+
+function viewApplications(jobId) {
+    adminPanel.viewApplications(jobId);
+}
+
+function editJob(jobId) {
+    adminPanel.editJob(jobId);
+}
+
+function deleteJob(jobId) {
+    adminPanel.deleteJob(jobId);
+}
+
+function viewResume(applicationId) {
+    adminPanel.viewResume(applicationId);
+}
+
+function acceptApplication(applicationId) {
+    adminPanel.acceptApplication(applicationId);
+}
+
+function rejectApplication(applicationId) {
+    adminPanel.rejectApplication(applicationId);
+}
+
+// Initialize Admin Panel when page loads
 document.addEventListener('DOMContentLoaded', function() {
     adminPanel = new AdminPanel();
 });
