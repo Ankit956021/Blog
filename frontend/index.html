@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogSpot - Modern Blog Platform</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>BlogSpot</h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="#home" class="nav-link active">
+                            <img src="https://cdn-icons-png.flaticon.com/128/1946/1946436.png" alt="Home" class="nav-icon">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#blogs" class="nav-link">
+                            <img src="https://cdn-icons-png.flaticon.com/128/3022/3022088.png" alt="Blogs" class="nav-icon">
+                            Blogs
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#add-blog" class="nav-link" id="add-blog-btn">
+                            <img src="https://cdn-icons-png.flaticon.com/128/4211/4211763.png" alt="Add" class="nav-icon">
+                            Add Blog
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pages/support.html" class="nav-link">
+                            <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Support" class="nav-icon">
+                            Support
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pages/careers.html" class="nav-link">
+                            <img src="https://cdn-icons-png.flaticon.com/128/3588/3588435.png" alt="Careers" class="nav-icon">
+                            Careers
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button class="login-btn" id="loginBtn">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1828/1828490.png" alt="Login" class="login-icon">
+                    Login
+                </button>
+                <button class="menu-toggle" id="menuToggle">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1828/1828859.png" alt="Menu" class="menu-icon">
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Welcome to Your Modern Blog</h1>
+                    <p class="hero-description">Share your thoughts, stories, and experiences with the world. Join our community of writers and readers.</p>
+                    <button class="cta-btn" id="getStartedBtn">Get Started</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Ticker -->
+        <section class="news-ticker">
+            <div class="container">
+                <div class="ticker-wrapper">
+                    <div class="ticker-label">Latest News:</div>
+                    <div class="ticker-content" id="newsTicker">
+                        <span>Welcome to our new blog platform! • Share your stories with the world • Join our growing community • Latest updates and features coming soon</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Posts Section -->
+        <section class="blog-section" id="blogs">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Latest Blog Posts</h2>
+                    <button class="view-all-btn" id="viewAllBtn">View All</button>
+                </div>
+                
+                <!-- Auto-scrolling blog posts -->
+                <div class="blog-carousel" id="blogCarousel">
+                    <div class="blog-grid" id="adminBlogs">
+                        <!-- Admin blog posts will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- User Blog Posts -->
+                <div class="section-header" style="margin-top: 60px;">
+                    <h2>Community Posts</h2>
+                </div>
+                <div class="blog-grid" id="userBlogs">
+                    <!-- User blog posts will be inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter-section">
+            <div class="container">
+                <div class="newsletter-box">
+                    <div class="newsletter-content">
+                        <img src="https://cdn-icons-png.flaticon.com/128/726/726623.png" alt="Newsletter" class="newsletter-icon">
+                        <h3>Subscribe to Our Newsletter</h3>
+                        <p>Get the latest blog posts and updates delivered directly to your inbox.</p>
+                        <form class="newsletter-form" id="newsletterForm">
+                            <input type="email" placeholder="Enter your email address" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>BlogSpot</h3>
+                    <p>A modern platform for sharing stories and connecting with readers worldwide.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#blogs">Blogs</a></li>
+                        <li><a href="pages/support.html">Support</a></li>
+                        <li><a href="pages/careers.html">Careers</a></li>
+                        <li><a href="pages/admin.html" target="_blank" class="admin-link">
+                            <img src="https://cdn-icons-png.flaticon.com/128/2040/2040504.png" alt="Admin" style="width: 16px; height: 16px; margin-right: 5px; vertical-align: middle;">
+                            Admin Panel
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BlogSpot. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeLoginModal">
+                <img src="https://cdn-icons-png.flaticon.com/128/1828/1828778.png" alt="Close">
+            </span>
+            <div class="modal-header">
+                <h2 id="modalTitle">Login</h2>
+            </div>
+            <form class="auth-form" id="authForm">
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <input type="text" id="name" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="auth-btn" id="authBtn">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1828/1828490.png" alt="Login" id="authIcon">
+                    <span id="authText">Login</span>
+                </button>
+            </form>
+            <div class="auth-switch">
+                <p id="switchText">Don't have an account? <button type="button" id="switchBtn">Register</button></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Post Modal -->
+    <div class="modal" id="blogModal">
+        <div class="modal-content blog-modal-content">
+            <span class="close-btn" id="closeBlogModal">
+                <img src="https://cdn-icons-png.flaticon.com/128/1828/1828778.png" alt="Close">
+            </span>
+            <div class="blog-post-full" id="blogPostFull">
+                <!-- Blog post content will be inserted here -->
+            </div>
+            <div class="comments-section">
+                <h3>Comments</h3>
+                <div class="add-comment" id="addCommentSection">
+                    <textarea placeholder="Write a comment..." id="commentText"></textarea>
+                    <button type="button" id="submitComment">Post Comment</button>
+                </div>
+                <div class="comments-list" id="commentsList">
+                    <!-- Comments will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Blog Modal -->
+    <div class="modal" id="addBlogModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeAddBlogModal">
+                <img src="https://cdn-icons-png.flaticon.com/128/1828/1828778.png" alt="Close">
+            </span>
+            <div class="modal-header">
+                <h2>Create New Blog Post</h2>
+            </div>
+            <form class="blog-form" id="blogForm">
+                <div class="form-group">
+                    <input type="text" id="blogTitle" placeholder="Blog Title" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="blogCategory" placeholder="Category (e.g., Technology, Lifestyle)" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="blogContent" placeholder="Write your blog content here..." rows="10" required></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="url" id="blogImage" placeholder="Image URL (optional)">
+                </div>
+                <button type="submit" class="submit-btn">
+                    <img src="https://cdn-icons-png.flaticon.com/128/4211/4211763.png" alt="Add">
+                    Publish Blog
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

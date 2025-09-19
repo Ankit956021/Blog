@@ -1,0 +1,17 @@
+{
+  "name": "blogspot-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for BlogSpot website",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000",
+    "build": "echo 'Frontend build completed'",
+    "dev": "live-server --port=3000 --watch=."
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": ["blog", "frontend", "website"],
+  "author": "Your Name",
+  "license": "MIT"
+}
