@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - BlogSpot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Login Modal */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-box h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: #ffc0cb;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffc0cb, #ffb6c1);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255,192,203,0.4);
+        }
+
+        /* Admin Panel Layout */
+        .admin-container {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h2 {
+            color: #ffc0cb;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header span {
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            margin: 5px 15px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #bdc3c7;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,192,203,0.1);
+            color: #ffc0cb;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, #ffc0cb, #ffb6c1);
+            color: white;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            background: #f8f9fa;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231,76,60,0.4);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Dashboard Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffc0cb;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Content Cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .content-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .card-meta {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .card-content {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Add Button */
+        .add-btn {
+            background: linear-gradient(135deg, #ffc0cb, #ffb6c1);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255,192,203,0.4);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ffc0cb;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Messages */
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10001;
+            animation: slideIn 0.3s ease;
+        }
+
+        .message.success {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                color: #333;
+                font-size: 20px;
+                cursor: pointer;
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-box">
+            <h2>🔐 Admin Login</h2>
+            <div class="login-form">
+                <input type="email" id="adminEmail" placeholder="Email" value="admin@blog.com">
+                <input type="password" id="adminPassword" placeholder="Password" value="admin123">
+                <button class="login-btn" onclick="handleLogin()">Login to Admin Panel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-container" id="adminContainer">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>BlogSpot</h2>
+                <span>Admin Panel</span>
+            </div>
+            <nav class="nav-menu">
+                <div class="nav-item">
+                    <a class="nav-link active" onclick="showSection('dashboard')">
+                        <span class="nav-icon">📊</span>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" onclick="showSection('blogs')">
+                        <span class="nav-icon">📝</span>
+                        Manage Blogs
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" onclick="showSection('comments')">
+                        <span class="nav-icon">💬</span>
+                        Comments
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" onclick="showSection('users')">
+                        <span class="nav-icon">👥</span>
+                        Users
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" onclick="showSection('support')">
+                        <span class="nav-icon">🎧</span>
+                        Support
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" onclick="showSection('careers')">
+                        <span class="nav-icon">💼</span>
+                        Careers
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" onclick="showSection('settings')">
+                        <span class="nav-icon">⚙️</span>
+                        Settings
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div>
+                    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+
+            <div class="content">
+                <!-- Dashboard Section -->
+                <div class="section active" id="dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalBlogs">8</div>
+                            <div class="stat-label">Total Blogs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalUsers">156</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalComments">423</div>
+                            <div class="stat-label">Total Comments</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalSubscribers">89</div>
+                            <div class="stat-label">Subscribers</div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card">
+                        <div class="card-title">Recent Activity</div>
+                        <div id="recentActivity">
+                            <div style="padding: 15px; border-left: 4px solid #ffc0cb; margin: 10px 0; background: #f9f9f9;">
+                                <strong>New Blog Posted</strong><br>
+                                <small>John Doe published "Getting Started with React" - 2 hours ago</small>
+                            </div>
+                            <div style="padding: 15px; border-left: 4px solid #3498db; margin: 10px 0; background: #f9f9f9;">
+                                <strong>New User Registered</strong><br>
+                                <small>Jane Smith joined the platform - 4 hours ago</small>
+                            </div>
+                            <div style="padding: 15px; border-left: 4px solid #27ae60; margin: 10px 0; background: #f9f9f9;">
+                                <strong>Comment Added</strong><br>
+                                <small>Mike Wilson commented on "Vue.js Tutorial" - 6 hours ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blogs Section -->
+                <div class="section" id="blogs">
+                    <button class="add-btn" onclick="showAddBlogModal()">+ Add New Blog</button>
+                    <div class="content-grid" id="blogsGrid">
+                        <!-- Blogs will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="section" id="comments">
+                    <div class="content-grid" id="commentsGrid">
+                        <!-- Comments will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Users Section -->
+                <div class="section" id="users">
+                    <div class="content-grid" id="usersGrid">
+                        <!-- Users will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Support Section -->
+                <div class="section" id="support">
+                    <div class="content-card">
+                        <div class="card-title">Support Tickets</div>
+                        <div class="card-content">
+                            <p>Support ticket management system.</p>
+                            <p>Total Open Tickets: <strong>12</strong></p>
+                            <p>Resolved Today: <strong>8</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Careers Section -->
+                <div class="section" id="careers">
+                    <div class="content-card">
+                        <div class="card-title">Job Management</div>
+                        <div class="card-content">
+                            <p>Manage job postings and applications.</p>
+                            <p>Active Jobs: <strong>5</strong></p>
+                            <p>Applications Today: <strong>23</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Section -->
+                <div class="section" id="settings">
+                    <div class="content-card">
+                        <div class="card-title">System Settings</div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label>Site Title</label>
+                                <input type="text" value="BlogSpot - Modern Blogging Platform">
+                            </div>
+                            <div class="form-group">
+                                <label>Site Description</label>
+                                <textarea>A modern, responsive blogging platform for creators and readers.</textarea>
+                            </div>
+                            <button class="btn btn-success">Save Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Blog Modal -->
+    <div class="modal" id="addBlogModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Blog Post</h3>
+                <button class="close-btn" onclick="closeModal('addBlogModal')">&times;</button>
+            </div>
+            <form onsubmit="handleAddBlog(event)">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" required placeholder="Enter blog title">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Development">Development</option>
+                        <option value="Design">Design</option>
+                        <option value="Business">Business</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea name="content" required placeholder="Write your blog content here..."></textarea>
+                </div>
+                <div class="card-actions">
+                    <button type="button" class="btn" onclick="closeModal('addBlogModal')">Cancel</button>
+                    <button type="submit" class="btn btn-success">Create Blog</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample Data
+        let blogs = [
+            {
+                id: 1,
+                title: "Getting Started with React",
+                author: "John Doe",
+                category: "Development",
+                content: "React is a popular JavaScript library for building user interfaces...",
+                date: "2024-01-15",
+                comments: 12
+            },
+            {
+                id: 2,
+                title: "CSS Grid Layout Guide",
+                author: "Jane Smith",
+                category: "Design",
+                content: "CSS Grid is a powerful layout system that allows you to create complex layouts...",
+                date: "2024-01-20",
+                comments: 8
+            },
+            {
+                id: 3,
+                title: "JavaScript ES6 Features",
+                author: "Mike Wilson",
+                category: "Development",
+                content: "ES6 introduced many new features that make JavaScript more powerful...",
+                date: "2024-01-25",
+                comments: 15
+            }
+        ];
+
+        let comments = [
+            {
+                id: 1,
+                blogId: 1,
+                blogTitle: "Getting Started with React",
+                author: "Alice Brown",
+                content: "Great tutorial! Very helpful for beginners.",
+                date: "2024-01-16"
+            },
+            {
+                id: 2,
+                blogId: 2,
+                blogTitle: "CSS Grid Layout Guide",
+                author: "Bob Green",
+                content: "Thanks for explaining Grid so clearly!",
+                date: "2024-01-21"
+            }
+        ];
+
+        let users = [
+            {
+                id: 1,
+                name: "John Doe",
+                email: "john@example.com",
+                role: "Author",
+                joinDate: "2024-01-10",
+                posts: 5
+            },
+            {
+                id: 2,
+                name: "Jane Smith",
+                email: "jane@example.com",
+                role: "Author",
+                joinDate: "2024-01-12",
+                posts: 3
+            },
+            {
+                id: 3,
+                name: "Mike Wilson",
+                email: "mike@example.com",
+                role: "User",
+                joinDate: "2024-01-15",
+                posts: 1
+            }
+        ];
+
+        // Login Function
+        function handleLogin() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (email === 'admin@blog.com' && password === 'admin123') {
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('adminContainer').style.display = 'block';
+                showMessage('Welcome to Admin Panel!', 'success');
+                loadDashboard();
+            } else {
+                showMessage('Invalid credentials!', 'error');
+            }
+        }
+
+        // Logout Function
+        function handleLogout() {
+            document.getElementById('loginModal').style.display = 'flex';
+            document.getElementById('adminContainer').style.display = 'none';
+        }
+
+        // Show Section
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionName).classList.add('active');
+            
+            // Add active class to clicked nav link
+            event.target.classList.add('active');
+
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'blogs': 'Manage Blogs',
+                'comments': 'Manage Comments',
+                'users': 'Manage Users',
+                'support': 'Support Tickets',
+                'careers': 'Career Management',
+                'settings': 'Settings'
+            };
+            document.getElementById('pageTitle').textContent = titles[sectionName];
+
+            // Load section data
+            switch(sectionName) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'blogs':
+                    loadBlogs();
+                    break;
+                case 'comments':
+                    loadComments();
+                    break;
+                case 'users':
+                    loadUsers();
+                    break;
+            }
+        }
+
+        // Load Dashboard
+        function loadDashboard() {
+            document.getElementById('totalBlogs').textContent = blogs.length;
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('totalComments').textContent = comments.length;
+            document.getElementById('totalSubscribers').textContent = Math.floor(Math.random() * 100) + 50;
+        }
+
+        // Load Blogs
+        function loadBlogs() {
+            const grid = document.getElementById('blogsGrid');
+            grid.innerHTML = '';
+
+            blogs.forEach(blog => {
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.innerHTML = `
+                    <div class="card-title">${blog.title}</div>
+                    <div class="card-meta">By ${blog.author} • ${blog.category} • ${formatDate(blog.date)}</div>
+                    <div class="card-content">${blog.content.substring(0, 100)}...</div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="viewBlog(${blog.id})">View</button>
+                        <button class="btn btn-success" onclick="editBlog(${blog.id})">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteBlog(${blog.id})">Delete</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Load Comments
+        function loadComments() {
+            const grid = document.getElementById('commentsGrid');
+            grid.innerHTML = '';
+
+            comments.forEach(comment => {
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.innerHTML = `
+                    <div class="card-title">Comment on: ${comment.blogTitle}</div>
+                    <div class="card-meta">By ${comment.author} • ${formatDate(comment.date)}</div>
+                    <div class="card-content">${comment.content}</div>
+                    <div class="card-actions">
+                        <button class="btn btn-success" onclick="approveComment(${comment.id})">Approve</button>
+                        <button class="btn btn-danger" onclick="deleteComment(${comment.id})">Delete</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Load Users
+        function loadUsers() {
+            const grid = document.getElementById('usersGrid');
+            grid.innerHTML = '';
+
+            users.forEach(user => {
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.innerHTML = `
+                    <div class="card-title">${user.name}</div>
+                    <div class="card-meta">${user.email} • ${user.role}</div>
+                    <div class="card-content">
+                        <p>Joined: ${formatDate(user.joinDate)}</p>
+                        <p>Posts: ${user.posts}</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="viewUser(${user.id})">View</button>
+                        <button class="btn btn-success" onclick="editUser(${user.id})">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteUser(${user.id})">Delete</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Blog Functions
+        function viewBlog(id) {
+            const blog = blogs.find(b => b.id === id);
+            showMessage(`Viewing: ${blog.title}`, 'success');
+        }
+
+        function editBlog(id) {
+            const blog = blogs.find(b => b.id === id);
+            showMessage(`Editing: ${blog.title}`, 'success');
+        }
+
+        function deleteBlog(id) {
+            if (confirm('Are you sure you want to delete this blog?')) {
+                blogs = blogs.filter(b => b.id !== id);
+                loadBlogs();
+                showMessage('Blog deleted successfully!', 'success');
+            }
+        }
+
+        function showAddBlogModal() {
+            document.getElementById('addBlogModal').classList.add('show');
+        }
+
+        function handleAddBlog(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            
+            const newBlog = {
+                id: Date.now(),
+                title: formData.get('title'),
+                author: 'Admin',
+                category: formData.get('category'),
+                content: formData.get('content'),
+                date: new Date().toISOString().split('T')[0],
+                comments: 0
+            };
+
+            blogs.push(newBlog);
+            closeModal('addBlogModal');
+            loadBlogs();
+            showMessage('Blog created successfully!', 'success');
+            event.target.reset();
+        }
+
+        // Comment Functions
+        function approveComment(id) {
+            showMessage('Comment approved!', 'success');
+        }
+
+        function deleteComment(id) {
+            if (confirm('Are you sure you want to delete this comment?')) {
+                comments = comments.filter(c => c.id !== id);
+                loadComments();
+                showMessage('Comment deleted successfully!', 'success');
+            }
+        }
+
+        // User Functions
+        function viewUser(id) {
+            const user = users.find(u => u.id === id);
+            showMessage(`Viewing user: ${user.name}`, 'success');
+        }
+
+        function editUser(id) {
+            const user = users.find(u => u.id === id);
+            showMessage(`Editing user: ${user.name}`, 'success');
+        }
+
+        function deleteUser(id) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                users = users.filter(u => u.id !== id);
+                loadUsers();
+                showMessage('User deleted successfully!', 'success');
+            }
+        }
+
+        // Utility Functions
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            document.body.appendChild(messageDiv);
+
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboard();
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

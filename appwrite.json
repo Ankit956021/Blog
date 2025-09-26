@@ -1,0 +1,261 @@
+{
+  "projectId": "68d683d6000d13d40634",
+  "projectName": "BlogSpot",
+  "functions": [
+    {
+      "name": "blog-api",
+      "path": "./backend",
+      "runtime": "node-18.0",
+      "entrypoint": "server.js",
+      "env": {
+        "APPWRITE_ENDPOINT": "https://nyc.cloud.appwrite.io/v1",
+        "APPWRITE_PROJECT_ID": "68d683d6000d13d40634",
+        "APPWRITE_API_KEY": "standard_e335431fa40fc66dd8a87937ad12f1d47f841bae9989b3d2cf5f4e52cd7af7f7bcf3d0dad55cbd7fffdef3b6fdceb7ba2598f2a40e4ac6c411b82c692eaa7b4e83e13be1db4885f4380468adc2282bc106c311f84a52d45d135880850cb25ab760eccce0681e5ef67ad460beb3bcc5f3bd52a61a491b7c2b433cc3dc9fedbd5c",
+        "APPWRITE_DATABASE_ID": "blog",
+        "APPWRITE_COLLECTION_BLOGS": "blogs",
+        "APPWRITE_COLLECTION_COMMENTS": "comments",
+        "APPWRITE_COLLECTION_CATEGORIES": "categories",
+        "APPWRITE_COLLECTION_USERS": "users",
+        "APPWRITE_COLLECTION_SUPPORT": "support",
+        "APPWRITE_COLLECTION_CAREERS": "careers",
+        "APPWRITE_BUCKET_ID": "blog_images",
+        "PORT": "3001",
+        "NODE_ENV": "production"
+      }
+    }
+  ],
+  "databases": [
+    {
+      "databaseId": "blog",
+      "name": "BlogSpot Database",
+      "collections": [
+        {
+          "collectionId": "blogs",
+          "name": "Blogs",
+          "permissions": [
+            "read(\"any\")",
+            "create(\"users\")",
+            "update(\"users\")",
+            "delete(\"users\")"
+          ],
+          "attributes": [
+            {
+              "key": "title",
+              "type": "string",
+              "size": 255,
+              "required": true
+            },
+            {
+              "key": "content",
+              "type": "string",
+              "size": 10000,
+              "required": true
+            },
+            {
+              "key": "author",
+              "type": "string",
+              "size": 100,
+              "required": true
+            },
+            {
+              "key": "category",
+              "type": "string",
+              "size": 100,
+              "required": false
+            },
+            {
+              "key": "tags",
+              "type": "string",
+              "size": 500,
+              "required": false,
+              "array": true
+            },
+            {
+              "key": "views",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            },
+            {
+              "key": "likes",
+              "type": "integer",
+              "required": false,
+              "default": 0
+            }
+          ]
+        },
+        {
+          "collectionId": "comments",
+          "name": "Comments",
+          "permissions": [
+            "read(\"any\")",
+            "create(\"users\")",
+            "update(\"users\")",
+            "delete(\"users\")"
+          ],
+          "attributes": [
+            {
+              "key": "blogId",
+              "type": "string",
+              "size": 100,
+              "required": true
+            },
+            {
+              "key": "author",
+              "type": "string",
+              "size": 100,
+              "required": true
+            },
+            {
+              "key": "content",
+              "type": "string",
+              "size": 1000,
+              "required": true
+            },
+            {
+              "key": "approved",
+              "type": "boolean",
+              "required": false,
+              "default": false
+            }
+          ]
+        },
+        {
+          "collectionId": "categories",
+          "name": "Categories",
+          "permissions": [
+            "read(\"any\")",
+            "create(\"users\")",
+            "update(\"users\")",
+            "delete(\"users\")"
+          ],
+          "attributes": [
+            {
+              "key": "name",
+              "type": "string",
+              "size": 100,
+              "required": true
+            },
+            {
+              "key": "description",
+              "type": "string",
+              "size": 500,
+              "required": false
+            }
+          ]
+        },
+        {
+          "collectionId": "support",
+          "name": "Support Tickets",
+          "permissions": [
+            "read(\"any\")",
+            "create(\"any\")",
+            "update(\"users\")",
+            "delete(\"users\")"
+          ],
+          "attributes": [
+            {
+              "key": "name",
+              "type": "string",
+              "size": 100,
+              "required": true
+            },
+            {
+              "key": "email",
+              "type": "string",
+              "size": 100,
+              "required": true
+            },
+            {
+              "key": "subject",
+              "type": "string",
+              "size": 200,
+              "required": true
+            },
+            {
+              "key": "message",
+              "type": "string",
+              "size": 2000,
+              "required": true
+            },
+            {
+              "key": "status",
+              "type": "string",
+              "size": 50,
+              "required": false,
+              "default": "open"
+            }
+          ]
+        },
+        {
+          "collectionId": "careers",
+          "name": "Career Applications",
+          "permissions": [
+            "read(\"users\")",
+            "create(\"any\")",
+            "update(\"users\")",
+            "delete(\"users\")"
+          ],
+          "attributes": [
+            {
+              "key": "name",
+              "type": "string",
+              "size": 100,
+              "required": true
+            },
+            {
+              "key": "email",
+              "type": "string",
+              "size": 100,
+              "required": true
+            },
+            {
+              "key": "position",
+              "type": "string",
+              "size": 100,
+              "required": true
+            },
+            {
+              "key": "experience",
+              "type": "string",
+              "size": 20,
+              "required": true
+            },
+            {
+              "key": "resume",
+              "type": "string",
+              "size": 200,
+              "required": false
+            },
+            {
+              "key": "status",
+              "type": "string",
+              "size": 50,
+              "required": false,
+              "default": "pending"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "storage": [
+    {
+      "bucketId": "blog_images",
+      "name": "Blog Images",
+      "permissions": [
+        "read(\"any\")",
+        "create(\"users\")",
+        "update(\"users\")",
+        "delete(\"users\")"
+      ],
+      "fileSecurity": true,
+      "enabled": true,
+      "maximumFileSize": 10485760,
+      "allowedFileExtensions": ["jpg", "jpeg", "png", "gif", "webp", "svg"],
+      "compression": "gzip",
+      "encryption": true,
+      "antivirus": true
+    }
+  ]
+}

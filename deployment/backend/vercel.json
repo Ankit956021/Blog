@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "name": "blogspot-api",
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/server.js"
+    }
+  ],
+  "env": {
+    "APPWRITE_ENDPOINT": "https://nyc.cloud.appwrite.io/v1",
+    "APPWRITE_PROJECT_ID": "68d683d6000d13d40634",
+    "APPWRITE_API_KEY": "standard_e335431fa40fc66dd8a87937ad12f1d47f841bae9989b3d2cf5f4e52cd7af7f7bcf3d0dad55cbd7fffdef3b6fdceb7ba2598f2a40e4ac6c411b82c692eaa7b4e83e13be1db4885f4380468adc2282bc106c311f84a52d45d135880850cb25ab760eccce0681e5ef67ad460beb3bcc5f3bd52a61a491b7c2b433cc3dc9fedbd5c",
+    "APPWRITE_DATABASE_ID": "blog",
+    "APPWRITE_COLLECTION_BLOGS": "blogs",
+    "APPWRITE_COLLECTION_COMMENTS": "comments",
+    "APPWRITE_COLLECTION_CATEGORIES": "categories",
+    "APPWRITE_COLLECTION_USERS": "users",
+    "APPWRITE_COLLECTION_SUPPORT": "support",
+    "APPWRITE_COLLECTION_CAREERS": "careers",
+    "APPWRITE_BUCKET_ID": "blog_images",
+    "NODE_ENV": "production"
+  }
+}

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - BlogSpot</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/support-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <h1><a href="../index.html" style="text-decoration: none; color: inherit;">BlogSpot</a></h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="../index.html#home" class="nav-link">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1946/1946436.png" alt="Home" class="nav-icon">
+                        Home
+                    </a></li>
+                    <li><a href="../index.html#blogs" class="nav-link">
+                        <img src="https://cdn-icons-png.flaticon.com/128/3022/3022088.png" alt="Blogs" class="nav-icon">
+                        Blogs
+                    </a></li>
+                    <li><a href="#support" class="nav-link active">
+                        <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Support" class="nav-icon">
+                        Support
+                    </a></li>
+                    <li><a href="careers.html" class="nav-link">
+                        <img src="https://cdn-icons-png.flaticon.com/128/3588/3588435.png" alt="Careers" class="nav-icon">
+                        Careers
+                    </a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="../index.html" class="back-btn">
+                    <img src="https://cdn-icons-png.flaticon.com/128/2099/2099058.png" alt="Back" class="nav-icon">
+                    Back to Site
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="support-main">
+        <!-- Hero Section -->
+        <section class="support-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <img src="https://cdn-icons-png.flaticon.com/128/681/681494.png" alt="Support" class="hero-icon">
+                    <h1>Need Help? We're Here for You!</h1>
+                    <p>Get quick answers to your questions or reach out to our support team.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Website Section -->
+        <section class="about-section">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-content">
+                        <h2>About BlogSpot</h2>
+                        <p>BlogSpot is a modern, user-friendly blogging platform designed to help writers share their stories with the world. Our platform offers a beautiful, responsive design with advanced features like real-time comments, user authentication, and a powerful admin panel.</p>
+                        
+                        <h3>Key Features:</h3>
+                        <ul class="features-list">
+                            <li>✨ Modern, responsive design with light colors and smooth animations</li>
+                            <li>📝 Easy-to-use blog creation and management tools</li>
+                            <li>💬 Interactive comment system with real-time updates</li>
+                            <li>❤️ Like and engagement features</li>
+                            <li>🔐 Secure user authentication and registration</li>
+                            <li>📧 Newsletter subscription system</li>
+                            <li>🛡️ Comprehensive admin panel for content management</li>
+                            <li>📱 Fully responsive design for all devices</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <h3>Contact Information</h3>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <img src="https://cdn-icons-png.flaticon.com/128/1077/1077114.png" alt="Name" class="contact-icon">
+                                <div>
+                                    <strong>Developer</strong>
+                                    <p>Ankit Kumar Meena</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <img src="https://cdn-icons-png.flaticon.com/128/732/732200.png" alt="Email" class="contact-icon">
+                                <div>
+                                    <strong>Email</strong>
+                                    <p>ankitkumar956021@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <img src="https://cdn-icons-png.flaticon.com/128/3588/3588767.png" alt="Response" class="contact-icon">
+                                <div>
+                                    <strong>Response Time</strong>
+                                    <p>Within 24 hours</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Raise Ticket Section -->
+        <section class="ticket-section">
+            <div class="container">
+                <div class="ticket-content">
+                    <h2>Raise a Support Ticket</h2>
+                    <p>Having an issue? Let us know and we'll get back to you as soon as possible.</p>
+                    
+                    <form class="ticket-form" id="ticketForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ticketName">Your Name</label>
+                                <input type="text" id="ticketName" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ticketEmail">Your Email</label>
+                                <input type="email" id="ticketEmail" placeholder="Enter your email address" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ticketSubject">Subject</label>
+                            <select id="ticketSubject" required>
+                                <option value="">Select an issue type</option>
+                                <option value="login-issue">Login/Registration Issue</option>
+                                <option value="blog-posting">Blog Posting Problem</option>
+                                <option value="comment-issue">Comment System Issue</option>
+                                <option value="technical-bug">Technical Bug</option>
+                                <option value="feature-request">Feature Request</option>
+                                <option value="account-issue">Account Related Issue</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ticketPriority">Priority Level</label>
+                            <select id="ticketPriority" required>
+                                <option value="low">Low - General inquiry</option>
+                                <option value="medium">Medium - Non-urgent issue</option>
+                                <option value="high">High - Urgent issue</option>
+                                <option value="critical">Critical - Site not working</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ticketDescription">Describe Your Issue</label>
+                            <textarea id="ticketDescription" rows="6" placeholder="Please provide detailed information about your issue..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-ticket-btn">
+                            <img src="https://cdn-icons-png.flaticon.com/128/3588/3588611.png" alt="Submit" class="btn-icon">
+                            Submit Ticket
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h3>How do I create a new blog post?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>To create a new blog post, first log in to your account. Then click on the "Add Blog" button in the navigation menu. Fill in the required fields (title, category, content) and click "Publish Blog" to make your post live.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h3>How do I register for an account?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Click on the "Login" button in the top right corner, then click "Register" in the modal. Fill in your name, email, and password. Once registered, you can start creating blog posts and commenting on others' posts.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h3>Can I edit or delete my blog posts?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes! You can edit or delete your blog posts through your user dashboard. Simply navigate to your posts and use the edit or delete options available for each post.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h3>How do comments work?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>To comment on a blog post, click on the post to open it in full view. Scroll down to the comments section, write your comment in the text area, and click "Post Comment". You need to be logged in to comment.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h3>Is there a mobile app available?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Currently, BlogSpot is a web-based platform that works perfectly on mobile browsers. We're working on dedicated mobile apps for iOS and Android, which will be available soon.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h3>How can I subscribe to the newsletter?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>You can subscribe to our newsletter by entering your email address in the newsletter subscription box located at the bottom of the homepage. You'll receive updates about new features and popular blog posts.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h3>What should I do if I forgot my password?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Currently, password reset functionality is being developed. In the meantime, please contact our support team with your email address, and we'll help you regain access to your account.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <h3>Can I customize my profile?</h3>
+                            <span class="faq-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Profile customization features are coming soon! We're working on allowing users to add profile pictures, bio information, and social media links to their profiles.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Links Section -->
+        <section class="quick-links-section">
+            <div class="container">
+                <h2>Quick Links</h2>
+                <div class="quick-links-grid">
+                    <a href="../index.html" class="quick-link-card">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1946/1946436.png" alt="Home">
+                        <h3>Back to Home</h3>
+                        <p>Return to the main blog page</p>
+                    </a>
+                    
+                    <a href="careers.html" class="quick-link-card">
+                        <img src="https://cdn-icons-png.flaticon.com/128/3588/3588435.png" alt="Careers">
+                        <h3>Career Opportunities</h3>
+                        <p>Join our growing team</p>
+                    </a>
+                    
+                    <a href="admin.html" class="quick-link-card">
+                        <img src="https://cdn-icons-png.flaticon.com/128/2040/2040504.png" alt="Admin">
+                        <h3>Admin Panel</h3>
+                        <p>For administrators only</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>BlogSpot</h3>
+                    <p>A modern platform for sharing stories and connecting with readers worldwide.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="support.html">Support</a></li>
+                        <li><a href="careers.html">Careers</a></li>
+                        <li><a href="admin.html" target="_blank">Admin Panel</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Contact</h4>
+                    <div class="social-links">
+                        <p>ankitkumar956021@gmail.com</p>
+                        <p>Developer: Ankit Kumar Meena</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BlogSpot. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="https://cdn-icons-png.flaticon.com/128/5290/5290058.png" alt="Success" style="width: 50px; height: 50px; margin-bottom: 15px;">
+                <h2>Ticket Submitted Successfully!</h2>
+            </div>
+            <div class="modal-body">
+                <p>Thank you for contacting us. Your support ticket has been submitted successfully.</p>
+                <p><strong>Our team will reach out to you within 24 hours.</strong></p>
+                <p>You will receive a confirmation email shortly at the provided email address.</p>
+            </div>
+            <button class="close-modal-btn" onclick="closeSuccessModal()">
+                <img src="https://cdn-icons-png.flaticon.com/128/5290/5290058.png" alt="OK" style="width: 20px; height: 20px;">
+                Got it!
+            </button>
+        </div>
+    </div>
+
+    <script src="../assets/js/support.js"></script>
+</body>
+</html>
