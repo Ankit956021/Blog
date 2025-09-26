@@ -4,7 +4,20 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# IDE and Editor files
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+dist/
+build/
+.next/
+.nuxt/
+
+# IDE/Editor files
 .vscode/
 .idea/
 *.swp
@@ -20,18 +33,24 @@ yarn-error.log*
 ehthumbs.db
 Thumbs.db
 
-# Temporary files
-*.tmp
-*.temp
+# Appwrite specific
+appwrite.json.backup
+.appwrite/
+
+# Logs
+logs/
 *.log
 
-# Build outputs
-dist/
-build/
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output/
+
+# Temporary folders
+tmp/
+temp/

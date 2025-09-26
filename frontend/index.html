@@ -6,6 +6,24 @@
     <title>BlogSpot - Modern Blog Platform</title>
     <link rel="stylesheet" href="assets/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Appwrite SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
+    
+    <!-- Appwrite Configuration -->
+    <script>
+        // Global Appwrite Configuration
+        window.APPWRITE_ENDPOINT = 'https://nyc.cloud.appwrite.io/v1';
+        window.APPWRITE_PROJECT_ID = '68d683d6000d13d40634';
+        window.APPWRITE_DATABASE_ID = 'blog';
+        window.APPWRITE_COLLECTION_BLOGS = 'blogs';
+        window.APPWRITE_COLLECTION_COMMENTS = 'comments';
+        window.APPWRITE_COLLECTION_CATEGORIES = 'categories';
+        window.APPWRITE_COLLECTION_USERS = 'users';
+        window.APPWRITE_COLLECTION_SUPPORT = 'support';
+        window.APPWRITE_COLLECTION_CAREERS = 'careers';
+        window.APPWRITE_BUCKET_ID = 'blog_images';
+    </script>
 </head>
 <body>
     <!-- Header -->
@@ -246,6 +264,9 @@
         </div>
     </div>
 
+    <!-- Appwrite Services -->
+    <script src="assets/js/appwrite-config.js"></script>
+    <script src="assets/js/data-sync.js"></script>
     <script src="assets/js/script.js"></script>
 </body>
 </html>

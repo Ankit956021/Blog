@@ -1,97 +1,215 @@
 const express = require('express');
 const router = express.Router();
+const appwriteService = require('../services/appwriteService');
 
-// Sample comments data
-let comments = [
-    {
-        id: 1,
-        blogId: 1,
-        author: "Alice Johnson",
-        email: "alice@example.com",
-        content: "Great article! Very informative.",
-        date: "2024-01-16",
-        status: "approved"
-    },
-    {
-        id: 2,
-        blogId: 1,
-        author: "Bob Wilson",
-        email: "bob@example.com",
-        content: "Thanks for sharing this knowledge.",
-        date: "2024-01-17",
-        status: "pending"
-    }
-];
-
-// GET /api/comments - Get all comments
-router.get('/', (req, res) => {
+// Get comments for a specific blog
+router.get('/blog/:blogId', async (req, res) => {
     try {
-        const { blogId, status } = req.query;
-        let filteredComments = comments;
+        const { blogId } = req.params;
+        const { limit = 20, offset = 0 } = req.query;
         
-        if (blogId) {
-            filteredComments = filteredComments.filter(c => c.blogId === parseInt(blogId));
-        }
+        const comments = await appwriteService.getCommentsByBlogId(blogId);
         
-        if (status) {
-            filteredComments = filteredComments.filter(c => c.status === status);
-        }
-        
-        res.json(filteredComments);
+        res.status(200).json({
+            success: true,
+            data: comments.documents || [],
+            total: comments.total || 0,
+            message: 'Comments fetched successfully'
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching comments' });
+        console.error('Error fetching comments:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch comments',
+            error: error.message
+        });
     }
 });
 
-// POST /api/comments - Add new comment
-router.post('/', (req, res) => {
+// Create new comment
+router.post('/', async (req, res) => {
     try {
-        const { blogId, author, email, content } = req.body;
+        const { blog_id, author_name, author_email, content } = req.body;
         
-        const newComment = {
-            id: comments.length + 1,
-            blogId: parseInt(blogId),
-            author,
-            email,
-            content,
-            date: new Date().toISOString().split('T')[0],
-            status: 'pending'
+        // Validation
+        if (!blog_id || !author_name || !author_email || !content) {
+            return res.status(400).json({
+                success: false,
+                message: 'Blog ID, author name, email, and content are required'
+            });
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(author_email)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please provide a valid email address'
+            });
+        }
+        
+        const commentData = {
+            blog_id: blog_id.trim(),
+            author_name: author_name.trim(),
+            author_email: author_email.trim().toLowerCase(),
+            content: content.trim(),
+            status: 'pending' // Comments need admin approval
         };
         
-        comments.push(newComment);
-        res.status(201).json(newComment);
+        const newComment = await appwriteService.createComment(commentData);
+        
+        res.status(201).json({
+            success: true,
+            data: newComment,
+            message: 'Comment submitted successfully. It will be visible after admin approval.'
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error adding comment' });
+        console.error('Error creating comment:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to create comment',
+            error: error.message
+        });
     }
 });
 
-// PUT /api/comments/:id/approve - Approve comment
-router.put('/:id/approve', (req, res) => {
+// Get all comments (admin only)
+router.get('/admin/all', async (req, res) => {
     try {
-        const commentIndex = comments.findIndex(c => c.id === parseInt(req.params.id));
-        if (commentIndex === -1) {
-            return res.status(404).json({ message: 'Comment not found' });
-        }
+        const { status = 'all', limit = 50, offset = 0 } = req.query;
         
-        comments[commentIndex].status = 'approved';
-        res.json(comments[commentIndex]);
+        // This would require admin authentication in production
+        // For now, we'll get all comments from the service
+        
+        const allComments = await appwriteService.db.listDocuments(
+            appwriteService.databaseId,
+            appwriteService.collections.comments,
+            [
+                ...(status !== 'all' ? [require('appwrite').Query.equal('status', status)] : []),
+                require('appwrite').Query.orderDesc('created_at'),
+                require('appwrite').Query.limit(parseInt(limit)),
+                require('appwrite').Query.offset(parseInt(offset))
+            ]
+        );
+        
+        res.status(200).json({
+            success: true,
+            data: allComments.documents || [],
+            total: allComments.total || 0,
+            message: 'All comments fetched successfully'
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error approving comment' });
+        console.error('Error fetching all comments:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch comments',
+            error: error.message
+        });
     }
 });
 
-// DELETE /api/comments/:id - Delete comment
-router.delete('/:id', (req, res) => {
+// Update comment status (admin only)
+router.put('/:id/status', async (req, res) => {
     try {
-        const commentIndex = comments.findIndex(c => c.id === parseInt(req.params.id));
-        if (commentIndex === -1) {
-            return res.status(404).json({ message: 'Comment not found' });
+        const { id } = req.params;
+        const { status } = req.body;
+        
+        // Validation
+        if (!['pending', 'approved', 'rejected'].includes(status)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Status must be: pending, approved, or rejected'
+            });
         }
         
-        comments.splice(commentIndex, 1);
-        res.json({ message: 'Comment deleted successfully' });
+        const updatedComment = await appwriteService.db.updateDocument(
+            appwriteService.databaseId,
+            appwriteService.collections.comments,
+            id,
+            { status }
+        );
+        
+        res.status(200).json({
+            success: true,
+            data: updatedComment,
+            message: `Comment ${status} successfully`
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting comment' });
+        console.error('Error updating comment status:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update comment status',
+            error: error.message
+        });
+    }
+});
+
+// Delete comment (admin only)
+router.delete('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        await appwriteService.db.deleteDocument(
+            appwriteService.databaseId,
+            appwriteService.collections.comments,
+            id
+        );
+        
+        res.status(200).json({
+            success: true,
+            message: 'Comment deleted successfully'
+        });
+    } catch (error) {
+        console.error('Error deleting comment:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete comment',
+            error: error.message
+        });
+    }
+});
+
+// Get comment statistics
+router.get('/stats', async (req, res) => {
+    try {
+        const { Query } = require('node-appwrite');
+        
+        // Get counts for different statuses
+        const pendingComments = await appwriteService.db.listDocuments(
+            appwriteService.databaseId,
+            appwriteService.collections.comments,
+            [Query.equal('status', 'pending'), Query.limit(1)]
+        );
+        
+        const approvedComments = await appwriteService.db.listDocuments(
+            appwriteService.databaseId,
+            appwriteService.collections.comments,
+            [Query.equal('status', 'approved'), Query.limit(1)]
+        );
+        
+        const rejectedComments = await appwriteService.db.listDocuments(
+            appwriteService.databaseId,
+            appwriteService.collections.comments,
+            [Query.equal('status', 'rejected'), Query.limit(1)]
+        );
+        
+        res.status(200).json({
+            success: true,
+            data: {
+                pending: pendingComments.total || 0,
+                approved: approvedComments.total || 0,
+                rejected: rejectedComments.total || 0,
+                total: (pendingComments.total || 0) + (approvedComments.total || 0) + (rejectedComments.total || 0)
+            },
+            message: 'Comment statistics fetched successfully'
+        });
+    } catch (error) {
+        console.error('Error fetching comment stats:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch comment statistics',
+            error: error.message
+        });
     }
 });
 

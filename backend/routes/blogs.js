@@ -1,103 +1,237 @@
 const express = require('express');
 const router = express.Router();
+const appwriteService = require('../services/appwriteService');
+const { ID } = require('node-appwrite');
 
-// Sample data for demonstration
-let blogs = [
-    {
-        id: 1,
-        title: "Getting Started with Web Development",
-        content: "Web development is an exciting field...",
-        author: "John Doe",
-        date: "2024-01-15",
-        image: "https://via.placeholder.com/400x250",
-        category: "Technology",
-        status: "published"
-    },
-    {
-        id: 2,
-        title: "The Future of AI",
-        content: "Artificial Intelligence is changing the world...",
-        author: "Jane Smith",
-        date: "2024-01-10",
-        image: "https://via.placeholder.com/400x250",
-        category: "AI",
-        status: "published"
-    }
-];
-
-// GET /api/blogs - Get all blogs
-router.get('/', (req, res) => {
+// Get all blogs with pagination
+router.get('/', async (req, res) => {
     try {
-        const publishedBlogs = blogs.filter(blog => blog.status === 'published');
-        res.json(publishedBlogs);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching blogs' });
-    }
-});
-
-// GET /api/blogs/:id - Get single blog
-router.get('/:id', (req, res) => {
-    try {
-        const blog = blogs.find(b => b.id === parseInt(req.params.id));
-        if (!blog) {
-            return res.status(404).json({ message: 'Blog not found' });
-        }
-        res.json(blog);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching blog' });
-    }
-});
-
-// POST /api/blogs - Create new blog
-router.post('/', (req, res) => {
-    try {
-        const { title, content, author, category, image } = req.body;
+        const { limit = 10, offset = 0, category, search } = req.query;
         
-        const newBlog = {
-            id: blogs.length + 1,
-            title,
-            content,
-            author,
-            category,
-            image: image || "https://via.placeholder.com/400x250",
-            date: new Date().toISOString().split('T')[0],
-            status: 'published'
+        let blogs;
+        if (search) {
+            blogs = await appwriteService.searchBlogs(search, parseInt(limit));
+        } else {
+            blogs = await appwriteService.getAllBlogs(parseInt(limit), parseInt(offset));
+        }
+        
+        // Filter by category if provided
+        if (category && blogs.documents) {
+            blogs.documents = blogs.documents.filter(blog => 
+                blog.category.toLowerCase() === category.toLowerCase()
+            );
+        }
+        
+        res.status(200).json({
+            success: true,
+            data: blogs.documents || [],
+            total: blogs.total || 0,
+            message: 'Blogs fetched successfully'
+        });
+    } catch (error) {
+        console.error('Error fetching blogs:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch blogs',
+            error: error.message
+        });
+    }
+});
+
+// Get single blog by ID
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const blog = await appwriteService.getBlogById(id);
+        
+        res.status(200).json({
+            success: true,
+            data: blog,
+            message: 'Blog fetched successfully'
+        });
+    } catch (error) {
+        console.error('Error fetching blog:', error);
+        res.status(404).json({
+            success: false,
+            message: 'Blog not found',
+            error: error.message
+        });
+    }
+});
+
+// Create new blog
+router.post('/', async (req, res) => {
+    try {
+        const { title, content, excerpt, author, category, tags, featured_image, status } = req.body;
+        
+        // Validation
+        if (!title || !content || !author || !category) {
+            return res.status(400).json({
+                success: false,
+                message: 'Title, content, author, and category are required'
+            });
+        }
+        
+        const blogData = {
+            title: title.trim(),
+            content: content.trim(),
+            excerpt: excerpt ? excerpt.trim() : content.substring(0, 200) + '...',
+            author: author.trim(),
+            category: category.trim(),
+            tags: tags || [],
+            featured_image: featured_image || null,
+            status: status || 'published'
         };
         
-        blogs.push(newBlog);
-        res.status(201).json(newBlog);
+        const newBlog = await appwriteService.createBlog(blogData);
+        
+        res.status(201).json({
+            success: true,
+            data: newBlog,
+            message: 'Blog created successfully'
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error creating blog' });
+        console.error('Error creating blog:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to create blog',
+            error: error.message
+        });
     }
 });
 
-// PUT /api/blogs/:id - Update blog
-router.put('/:id', (req, res) => {
+// Update blog
+router.put('/:id', async (req, res) => {
     try {
-        const blogIndex = blogs.findIndex(b => b.id === parseInt(req.params.id));
-        if (blogIndex === -1) {
-            return res.status(404).json({ message: 'Blog not found' });
-        }
+        const { id } = req.params;
+        const updateData = req.body;
         
-        blogs[blogIndex] = { ...blogs[blogIndex], ...req.body };
-        res.json(blogs[blogIndex]);
+        // Remove undefined values
+        Object.keys(updateData).forEach(key => {
+            if (updateData[key] === undefined) {
+                delete updateData[key];
+            }
+        });
+        
+        const updatedBlog = await appwriteService.updateBlog(id, updateData);
+        
+        res.status(200).json({
+            success: true,
+            data: updatedBlog,
+            message: 'Blog updated successfully'
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error updating blog' });
+        console.error('Error updating blog:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update blog',
+            error: error.message
+        });
     }
 });
 
-// DELETE /api/blogs/:id - Delete blog
-router.delete('/:id', (req, res) => {
+// Delete blog
+router.delete('/:id', async (req, res) => {
     try {
-        const blogIndex = blogs.findIndex(b => b.id === parseInt(req.params.id));
-        if (blogIndex === -1) {
-            return res.status(404).json({ message: 'Blog not found' });
+        const { id } = req.params;
+        await appwriteService.deleteBlog(id);
+        
+        res.status(200).json({
+            success: true,
+            message: 'Blog deleted successfully'
+        });
+    } catch (error) {
+        console.error('Error deleting blog:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete blog',
+            error: error.message
+        });
+    }
+});
+
+// Increment blog views
+router.post('/:id/view', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const blog = await appwriteService.getBlogById(id);
+        const newViews = (blog.views || 0) + 1;
+        
+        await appwriteService.updateBlog(id, { views: newViews });
+        
+        res.status(200).json({
+            success: true,
+            data: { views: newViews },
+            message: 'Blog view incremented'
+        });
+    } catch (error) {
+        console.error('Error incrementing views:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to increment views',
+            error: error.message
+        });
+    }
+});
+
+// Like/Unlike blog
+router.post('/:id/like', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { action } = req.body; // 'like' or 'unlike'
+        
+        const blog = await appwriteService.getBlogById(id);
+        let newLikes = blog.likes || 0;
+        
+        if (action === 'like') {
+            newLikes += 1;
+        } else if (action === 'unlike' && newLikes > 0) {
+            newLikes -= 1;
         }
         
-        blogs.splice(blogIndex, 1);
-        res.json({ message: 'Blog deleted successfully' });
+        await appwriteService.updateBlog(id, { likes: newLikes });
+        
+        res.status(200).json({
+            success: true,
+            data: { likes: newLikes },
+            message: `Blog ${action}d successfully`
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting blog' });
+        console.error('Error updating likes:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update likes',
+            error: error.message
+        });
+    }
+});
+
+// Get blogs by category
+router.get('/category/:category', async (req, res) => {
+    try {
+        const { category } = req.params;
+        const { limit = 10, offset = 0 } = req.query;
+        
+        const blogs = await appwriteService.getAllBlogs(parseInt(limit), parseInt(offset));
+        
+        // Filter by category
+        const filteredBlogs = blogs.documents.filter(blog => 
+            blog.category.toLowerCase() === category.toLowerCase()
+        );
+        
+        res.status(200).json({
+            success: true,
+            data: filteredBlogs,
+            total: filteredBlogs.length,
+            message: `Blogs in category '${category}' fetched successfully`
+        });
+    } catch (error) {
+        console.error('Error fetching blogs by category:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch blogs by category',
+            error: error.message
+        });
     }
 });
 
